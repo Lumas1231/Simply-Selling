@@ -2,6 +2,7 @@
 
 import { Home, Tag, Camera, BarChart, Handshake, FileText } from "lucide-react"
 import type { LucideIcon } from "lucide-react"
+import { motion } from "framer-motion"
 
 interface Step {
   icon: LucideIcon
@@ -99,18 +100,17 @@ export function HowItWorksStep({ step, index, isActive, isLocked, stepOffset, cu
   const boxShadow = isActive || isLocked ? "0 20px 60px rgba(0, 0, 0, 0.4)" : "0 10px 30px rgba(0, 0, 0, 0.2)"
 
   return (
-    <div
+    <motion.div
       className="absolute inset-0"
-      style={{
-        transform: `translateX(${transformValue}%) scale(${scale})`,
+      animate={{
+        x: `${transformValue}%`,
+        scale: scale,
         opacity: opacity,
-        filter: `blur(${blur}px)`,
+        filter: `blur(${mobileBlur}px)`,
+      }}
+      transition={{ type: "spring", stiffness: 80, damping: 20 }}
+      style={{
         zIndex: isActive || isLocked ? 20 : Math.max(1, 10 - Math.abs(Math.floor(stepOffset))),
-        // Enhanced transition with custom cubic-bezier curve
-        transition: isLocked
-          ? "none"
-          : "transform 1000ms cubic-bezier(0.22, 1, 0.36, 1), opacity 800ms cubic-bezier(0.22, 1, 0.36, 1), filter 600ms ease-out",
-        willChange: isLocked ? "auto" : "transform, opacity, filter",
         boxShadow: boxShadow,
       }}
     >
@@ -375,6 +375,6 @@ export function HowItWorksStep({ step, index, isActive, isLocked, stepOffset, cu
         }
       }
     `}</style>
-    </div>
+    </motion.div>
   )
 }
